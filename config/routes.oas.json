@@ -355,8 +355,9 @@
           "policies": {
             "inbound": [
               "api-key-inbound",
-              "monetization"
-            ]
+              "metered-request"
+            ],
+            "outbound": []
           }
         }
       },
@@ -376,7 +377,8 @@
           "policies": {
             "inbound": [
               "api-key-inbound",
-              "validate-json-schema-inbound"
+              "validate-json-schema-inbound",
+              "metered-request"
             ]
           }
         },
@@ -435,7 +437,8 @@
           },
           "policies": {
             "inbound": [
-              "api-key-inbound"
+              "api-key-inbound",
+              "metered-request"
             ]
           }
         },
@@ -527,7 +530,8 @@
           },
           "policies": {
             "inbound": [
-              "api-key-inbound"
+              "api-key-inbound",
+              "metered-request"
             ],
             "outbound": [
               "custom-code-outbound"
@@ -575,7 +579,8 @@
           "policies": {
             "inbound": [
               "api-key-inbound",
-              "validate-json-schema-inbound-1"
+              "validate-json-schema-inbound-1",
+              "metered-request"
             ]
           }
         },
@@ -643,7 +648,8 @@
           },
           "policies": {
             "inbound": [
-              "api-key-inbound"
+              "api-key-inbound",
+              "metered-request"
             ]
           }
         },
@@ -696,7 +702,8 @@
           },
           "policies": {
             "inbound": [
-              "api-key-inbound"
+              "api-key-inbound",
+              "metered-request"
             ]
           }
         },

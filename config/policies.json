@@ -44,25 +44,9 @@
     {
       "handler": {
         "export": "default",
-        "module": "$import(./modules/monetization/index)"
-      },
-      "name": "monetization",
-      "policyType": "custom-code-inbound"
-    },
-    {
-      "handler": {
-        "export": "default",
         "module": "$import(./modules/monetization/metered)"
       },
       "name": "metered-request",
-      "policyType": "custom-code-inbound"
-    },
-    {
-      "handler": {
-        "export": "default",
-        "module": "$import(./modules/monetization/monthly)"
-      },
-      "name": "monthly-limited-request",
       "policyType": "custom-code-inbound"
     }
   ]
