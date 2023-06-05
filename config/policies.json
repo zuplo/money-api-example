@@ -1,0 +1,69 @@
+{
+  "policies": [
+    {
+      "handler": {
+        "export": "ValidateJsonSchemaInbound",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "validator": "$import(./schemas/insert-todo.json)"
+        }
+      },
+      "name": "validate-json-schema-inbound",
+      "policyType": "validate-json-schema-inbound"
+    },
+    {
+      "handler": {
+        "export": "ValidateJsonSchemaInbound",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "validator": "$import(./schemas/update-todo.json)"
+        }
+      },
+      "name": "validate-json-schema-inbound-1",
+      "policyType": "validate-json-schema-inbound"
+    },
+    {
+      "handler": {
+        "export": "default",
+        "module": "$import(./modules/remove-user-id)"
+      },
+      "name": "custom-code-outbound",
+      "policyType": "custom-code-outbound"
+    },
+    {
+      "handler": {
+        "export": "ApiKeyInboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "allowUnauthenticatedRequests": false
+        }
+      },
+      "name": "api-key-inbound",
+      "policyType": "api-key-inbound"
+    },
+    {
+      "handler": {
+        "export": "default",
+        "module": "$import(./modules/monetization/index)"
+      },
+      "name": "monetization",
+      "policyType": "custom-code-inbound"
+    },
+    {
+      "handler": {
+        "export": "default",
+        "module": "$import(./modules/monetization/metered)"
+      },
+      "name": "metered-request",
+      "policyType": "custom-code-inbound"
+    },
+    {
+      "handler": {
+        "export": "default",
+        "module": "$import(./modules/monetization/monthly)"
+      },
+      "name": "monthly-limited-request",
+      "policyType": "custom-code-inbound"
+    }
+  ]
+}
