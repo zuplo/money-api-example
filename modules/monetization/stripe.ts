@@ -1,14 +1,14 @@
 import { Logger } from "@zuplo/runtime";
+import { environment } from "@zuplo/runtime";
 
-const stripeAPIKey =
-  "sk_test_51HWUYJG5nE8RSfGymCAgTXxgErfZW1AsuiEa1I0MT4SJ4wTXsQJkkYbjomAU6n04zkUke6CWx8OaLnwJQmHzWEfY004WsQYOnH";
+const STRIPE_API_KEY = environment.STRIPE_API_KEY;
 
 export const stripeRequest = async (path: string, options?: RequestInit) => {
   return fetch("https://api.stripe.com/v1" + path, {
     ...options,
     headers: {
       ...options?.headers,
-      Authorization: `Bearer ${stripeAPIKey}`,
+      Authorization: `Bearer ${STRIPE_API_KEY}`,
     },
   }).then((res) => res.json());
 };
