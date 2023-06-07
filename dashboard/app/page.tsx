@@ -1,6 +1,6 @@
 import { authOptions } from "./api/auth/[...nextauth]/auth-options";
 import { SignInPage } from "@/components/sign-in-page";
-import { StripeSubscriptionTable } from "@/components/stripe-subscription";
+import { StripePricingTable } from "@/components/stripe-pricing-table";
 import { getStripeSubscriptionByEmail } from "@/lib/stripe/user-subscription";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -21,7 +21,7 @@ export default async function IndexPage() {
     <>
       <Script src="https://js.stripe.com/v3/pricing-table.js" />
 
-      {session?.user ? <StripeSubscriptionTable /> : <SignInPage />}
+      {session?.user ? <StripePricingTable /> : <SignInPage />}
     </>
   );
 }
