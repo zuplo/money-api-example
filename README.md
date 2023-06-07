@@ -43,13 +43,13 @@ Auth0 is used to enable authentication _for the web-app only_ using social provi
 
 Steps:
 
-1. Create and account and log-in in Autho [https://auth0.com](https://auth0.com)
+1. **Create and account and log-in in Autho [https://auth0.com](https://auth0.com)**
 
-2. Create an Application
+2. **Create an Application**
 
 ![Create Auth0 App](./assets/auth0-create-account.png)
 
-3. In the _Settings_ tab, update the _Allowed Callback URLs_ field. You'll add the domains that your app authentication will work with, using comma separated values:
+3. **In the _Settings_ tab, update the _Allowed Callback URLs_ field. You'll add the domains that your app authentication will work with, using comma separated values**:
 
 ![Set up Allowed Callback URL](./assets/auth0-allowed-callback-url.png)
 
@@ -57,7 +57,7 @@ Steps:
 http://localhost:3000/api/auth/callback/auth0, https://$MY_APP_DOMAIN/api/auth/callback/auth0
 ```
 
-4. Copy the environment values you'll use in your APP
+4. **Copy the environment values you'll use in your APP**
 
 ![Copy Credentials values from Settings](./assets/auth0-credential-values.png)
 
@@ -76,15 +76,15 @@ Stripe is used to manage the subscription of your users to your API. In this sec
 
 Steps:
 
-1. Log in to Stripe https://stripe.com (if you're creating a new account, you can skip the section of _Activate payments on your account_)
+1. **Log in to Stripe https://stripe.com (if you're creating a new account, you can skip the section of _Activate payments on your account_)**
 
-2. Create a subscription Product
+2. **Create a subscription Product**
 
 ![Stripe Add Product Step 1](./assets/stripe-add-product.png)
 
 ![Stripe Add Product Step 2](./assets/stripe-add-product-step-2.png)
 
-3. Create a Pricing Table to embed on the web-app
+3. **Create a Pricing Table to embed on the web-app**
 
 Go back to _Product_ page.
 
@@ -96,7 +96,7 @@ Make sure to set the checkout redirect to the deployed web-app domain:
 
 ![](./assets/stripe-add-pricing-table-3.png)
 
-4. Add the Pricing table to your website
+4. **Add the Pricing table to your website**
 
 Copy the Pricing Table and paste in [`/dashboard/components/stripe-pricing-table.tsx`](./dashboard/components/stripe-pricing-table.tsx)
 
@@ -115,7 +115,7 @@ Copy the Pricing Table and paste in [`/dashboard/components/stripe-pricing-table
 />
 ```
 
-5. Save your Stripe Secret Key
+5. **Save your Stripe Secret Key**
 
 ![](./assets/stripe-get-secret-key.png)
 
@@ -136,13 +136,13 @@ The backend for this app can live anywhere and be written in any language, but i
 
 Steps:
 
-1. Create an account with Zuplo: http://zuplo.com
+1. **Create an account with Zuplo**: http://zuplo.com
 
-2. Create a Zuplo project from the template that you just forked
+2. **Create a Zuplo project from the template that you just forked**
 
 ![Create Project in Zuplo](./assets/zuplo-create-project.png)
 
-3. Copy the Zuplo Gateway URL
+3. **Copy the Zuplo Gateway URL**
 
 This is the URL that you'll use to make requests to your API.
 
@@ -153,7 +153,7 @@ This is the URL that you'll use to make requests to your API.
 ZUPLO_GATEWAY_URL=https://money-api-example-main-53ecc01.zuplo.app
 ```
 
-4. Copy the Zuplo Account ID and Project ID
+4. **Copy the Zuplo Account ID and Project ID**
 
 <div style="display: flex">
   <img src="./assets/zuplo-account-id.png" />
@@ -166,7 +166,7 @@ ZUPLO_ACCOUNT_ID=plum_everyday_squirrel
 ZUPLO_PROJECT_ID=teal-hornet
 ```
 
-5. Create your credentials with Zuplo's Developer API
+5. **Create your credentials with Zuplo's Developer API**
 
 You can find this in your Accounts Settings page in Zuplo.
 
@@ -177,7 +177,7 @@ You can find this in your Accounts Settings page in Zuplo.
 ZUPLO_API_KEY=zpka_...
 ```
 
-6. Get the Zuplo API Bucket name
+6. **Get the Zuplo API Bucket name**
 
 Run in your terminal to fetch the name of the API Bucket that you'll use to create API Keys for your users.
 
