@@ -63,12 +63,6 @@ export async function getProductById(productId: string) {
 }
 
 export type StripeActiveSubscription = {
-  product: {
-    name: string;
-    metadata: {
-      maxRequestsAllowed: number;
-    };
-  };
   usage?: {
     total_usage: number;
   };
@@ -98,30 +92,17 @@ export const getStripeSubscriptionByEmail = async (
     return Err(GetStripeSubscriptionByEmailError.NoSubscription);
   }
 
-  const product = await getProductById(customerSubscription.plan.product);
+  const subscriptionItemId = customerSubscription.items.data[0].id;
 
-  if (!product) {
-    return Err(GetStripeSubscriptionByEmailError.NoProduct);
-  }
+  const subscriptionItemUsage = await getSubscriptionItemUsage(
+    subscriptionItemId
+  );
 
-  if (customerSubscription.plan.usage_type === "metered") {
-    const subscriptionItemId = customerSubscription.items.data[0].id;
-
-    const subscriptionItemUsage = await getSubscriptionItemUsage(
-      subscriptionItemId
-    );
-
-    if (subscriptionItemUsage === null) {
-      return Err(GetStripeSubscriptionByEmailError.NoUsage);
-    }
-
-    return Ok({
-      usage: subscriptionItemUsage,
-      product,
-    });
+  if (subscriptionItemUsage === null) {
+    return Err(GetStripeSubscriptionByEmailError.NoUsage);
   }
 
   return Ok({
-    product,
+    usage: subscriptionItemUsage,
   });
 };
