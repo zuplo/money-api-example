@@ -198,3 +198,22 @@ ZUPLO_KEY_BUCKET=zprj-123ABC-production
 ## Step 5 - Update the Environment Variables of your Web-App
 
 Now that you have all the environment variables of your account, you can update the environment variables in Vercel to make your web-app work.
+
+![](./assets/vercel-update-envs.png)
+
+You will to trigger an empty deployment to make sure that the environment variables are updated.
+
+```sh
+git commit --allow-empty -m "Trigger empty deployment to update envs"
+git push
+```
+
+## Step 6 - Try it out!
+
+You can now go through the flow of signing up to your API, creating an API Key, and making requests to your API.
+
+While signing up with Stripe, you can use [Test Credit Cards](https://stripe.com/docs/testing) to simulate the payment flow.
+
+Go make some money!
+
+![](./assets/money-api-ready.png)
