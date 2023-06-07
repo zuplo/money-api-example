@@ -1,8 +1,31 @@
-# Zuplo Todo Sample
+# Money API Example
 
-This is a simple [Zuplo](https://zuplo.com) sample Todo list API.
+This is a repository containing a sample application that shows how to monetize your APIs using Zuplo.
 
-### Fork this repositoy
+It uses the following technologies:
+
+- [Zuplo](https://zuplo.com) - API Gateway
+- [Stripe](https://stripe.com) - Payment Processor
+- [Auth0](https://auth0.com) - Authentication Provider
+- [Vercel](https://vercel.com) - Web App Hosting
+
+## How it works
+
+This example shows how to monetize an API using Zuplo. It uses a simple ToDo API as an example.
+
+Zuplo is used by companies that want to ship production-ready APIs to their customers. It offers beautiful Developer Docs, API Key authentication, rate-limiting and more.
+
+This sample application consists of 3 parts:
+
+- A Zuplo API Gateway that secures your API and allows you to monetize it
+- A simple web-app using [NextJS](https://nextjs.org) that allows users to sign up and subscribe to your API
+- A Stripe subscription product that allows your users to pay for the exact number of requests they make to your API
+
+![Money API Components](./assets/money-api-components.png)
+
+Your customers will be able to sign up to use your API using the web-app and make requests to your API using an API Key that they can generate in the Zuplo Developer Portal.
+
+## Getting Started
 
 [Fork](https://github.com/zuplo/money-api-example/fork) the repository as you will need to connect Zuplo to your own repository.
 
