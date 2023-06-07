@@ -1,4 +1,4 @@
-export const StripeSubscriptionTable = () => {
+export const StripePricingTable = () => {
   return (
     <>
       <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
@@ -16,10 +16,7 @@ export const StripeSubscriptionTable = () => {
       <div
         dangerouslySetInnerHTML={{
           __html: `
-              <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
-                <stripe-pricing-table pricing-table-id="prctbl_1NDvt1G5nE8RSfGyUeCkTdIZ"
-                publishable-key="pk_test_51HWUYJG5nE8RSfGywgJ3pwfcC9m4Hiic2QejxjU3mehsrUHBIzmLlZuMJGHeZ7JfKjN5Kmxn5d1FnsOB9tFUejeV00f5HIW9Bk">
-              </stripe-pricing-table>
+              YOUR SUBSCRIPTION TABLE HERE
             `,
         }}
       />
