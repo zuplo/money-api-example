@@ -142,57 +142,31 @@ Steps:
 
 ![Create Project in Zuplo](./assets/zuplo-create-project.png)
 
-3. **Copy the Zuplo Gateway URL**
+3. **Get Zuplo-related environment variables**
 
-This is the URL that you'll use to make requests to your API.
+These environment variables are needed to programatically create a Zuplo API Key using the [Zuplo Dev API](https://dev.zuplo.com) for your users as soon as they finish the checkout process in your web-app.
 
-![Copy Zuplo Gateway URL](./assets/zuplo-copy-gateway-url.png)
+Make sure to copy the _Current Env URL_ and not the Production URL for now.
 
-```
+![](./assets/zuplo-project-settings.png)
+
+```sh
 # .env
-ZUPLO_GATEWAY_URL=https://money-api-example-main-53ecc01.zuplo.app
-```
-
-4. **Copy the Zuplo Account ID and Project ID**
-
-<div style="display: flex">
-  <img src="./assets/zuplo-account-id.png" />
-  <img src="./assets/zuplo-project-id.png" />
-</div>
-
-```
-# .env
-ZUPLO_ACCOUNT_ID=plum_everyday_squirrel
+ZUPLO_URL=https://teal-hornet-main-f515e70.d2.zuplo.dev
 ZUPLO_PROJECT_ID=teal-hornet
+ZUPLO_ACCOUNT_ID=plum_everyday_squirrel
+ZUPLO_KEY_BUCKET=zprj-123ABC-working-copy
 ```
 
-5. **Create your credentials with Zuplo's Developer API**
+4. **Get Zuplo Dev API secret key**
 
 You can find this in your Accounts Settings page in Zuplo.
 
-![](./assets/zuplo-create-dev-api-api-key.png)
+![](./assets/zuplo-api-key.png)
 
 ```
 # .env
 ZUPLO_API_KEY=zpka_...
-```
-
-6. **Get the Zuplo API Bucket name**
-
-Run in your terminal to fetch the name of the API Bucket that you'll use to create API Keys for your users.
-
-```sh
-export ZUPLO_ACCOUNT_ID=your-account-id
-export ZUPLO_API_KEY=zpka_ABC123
-
-curl -s -X GET "https://dev.zuplo.com/v1/accounts/$ZUPLO_ACCOUNT_ID/key-buckets" -H "Authorization: Bearer $ZUPLO_API_KEY" | jq ".data[1].name"
-
-"zprj-123ABC-production"
-```
-
-```
-# .env
-ZUPLO_KEY_BUCKET=zprj-123ABC-production
 ```
 
 ## Step 5 - Update the Environment Variables of your Web-App
