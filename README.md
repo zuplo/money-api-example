@@ -146,9 +146,9 @@ Steps:
 
 These environment variables are needed to programatically create a Zuplo API Key using the [Zuplo Dev API](https://dev.zuplo.com) for your users as soon as they finish the checkout process in your web-app.
 
-Make sure to copy the _Current Env URL_ and not the Production URL for now.
-
 ![](./assets/zuplo-project-settings.png)
+
+Make sure to copy the _Current Env URL_ and not the Production URL for now.
 
 ```sh
 # .env
@@ -169,7 +169,7 @@ You can find this in your Accounts Settings page in Zuplo.
 ZUPLO_API_KEY=zpka_...
 ```
 
-## Step 5 - Update the Environment Variables of your Web-App
+## Step 5 - Update the Environment Variables in Vercel
 
 Now that you have all the environment variables of your account, you can update the environment variables in Vercel to make your web-app work.
 
