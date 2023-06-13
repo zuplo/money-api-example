@@ -26,8 +26,7 @@ const SignInModal = ({
         <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center md:px-16">
           <h3 className="font-display text-2xl font-bold">Sign In</h3>
           <p className="text-sm text-gray-500">
-            This is strictly for demo purposes - only your email and profile
-            picture will be stored.
+            This is strictly for demo purposes - no data is stored anywhere.
           </p>
         </div>
 
@@ -48,7 +47,6 @@ const SignInModal = ({
               <Icons.loadingDots color="#808080" />
             ) : (
               <>
-                <Icons.google className="h-5 w-5" />
                 <p>Sign In with Google</p>
               </>
             )}

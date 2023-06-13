@@ -1,4 +1,5 @@
 import { SignInButton } from "./sign-in-button";
+import Link from "next/link";
 
 export const SignInPage = () => {
   return (
@@ -8,9 +9,16 @@ export const SignInPage = () => {
           <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
             Money API: Where APIs meet 💸
           </h1>
-          <p className="text-muted-foreground max-w-[700px] text-lg  sm:text-xl">
-            The fastest way to get the car with wing doors.
-          </p>
+          <h2 className="text-gray-700 max-w-[700px] text-lg  sm:text-xl">
+            Money API is an Open Source example of how to create a monetizable
+            API using <Link className="text-blue-500" href="https://vercel.com">Vercel</Link>,{" "}
+            <Link className="text-blue-500" href="https://stripe.com">Stripe</Link> and{" "}
+            <Link className="text-blue-500" href="https://zuplo.com">Zuplo</Link>.
+            <br />
+            <br />
+            You can create a new API or bring any of your existing APIs and
+            start monetizing them in minutes.
+          </h2>
         </div>
       </section>
       <div className="flex w-full items-center justify-center">

@@ -1,15 +1,46 @@
+import Link from "next/link";
+
 export const StripePricingTable = () => {
   return (
     <>
       <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
         <div className="flex max-w-[980px] flex-col items-start gap-2">
           <h1 className="text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
-            Subscribe to our API and start
-            <br className="hidden sm:inline" />
-            now the change of your life.
+            Subscribe to your API here.
           </h1>
           <p className="text-muted-foreground max-w-[700px] text-lg  sm:text-xl">
-            The fastest way to get what you need.
+            Zuplo generates a{" "}
+            <Link
+              className="text-blue-500"
+              href="https://zuplo.com/docs/articles/developer-portal"
+            >
+              Developer Portal
+            </Link>{" "}
+            where your customers can explore your API's documentation and create
+            API Keys using Zuplo's{" "}
+            <Link
+              className="text-blue-500"
+              href="https://zuplo.com/docs/articles/api-key-management"
+            >
+              API Key Management
+            </Link>
+            .
+          </p>
+          <p className="text-muted-foreground max-w-[700px] text-lg  sm:text-xl">
+            On checkout an account will be created for your customers on your
+            API's own Developer Portal.
+          </p>
+          <p className="text-muted-foreground max-w-[700px] text-lg  sm:text-xl">
+            You can use{" "}
+            <Link
+              className="text-blue-500"
+              target="_blank"
+              href="https://stripe.com/docs/testing#cards"
+            >
+              fake credit card numbers
+            </Link>{" "}
+            to test the Stripe integration and use a ToDo API deployed with
+            Zuplo.
           </p>
         </div>
       </section>
