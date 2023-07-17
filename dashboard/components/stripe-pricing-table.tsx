@@ -47,7 +47,10 @@ export const StripePricingTable = () => {
       <div
         dangerouslySetInnerHTML={{
           __html: `
-              YOUR SUBSCRIPTION TABLE HERE
+          <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+          <stripe-pricing-table pricing-table-id="prctbl_1NG34MB1fwUIXnUbQDYUwfiW"
+          publishable-key="pk_test_51NG2yoB1fwUIXnUbe2HFOrRqdBOn5nrutcQovulTdjhzALqHS3ArVcFdO9zmyYfLwCDxkqgCdhZdehGaJxV2TvR300vp7lMlOQ">
+          </stripe-pricing-table>
             `,
         }}
       />
