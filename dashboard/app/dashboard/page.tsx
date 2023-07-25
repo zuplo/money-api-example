@@ -59,7 +59,7 @@ export default async function DashboardPage() {
           <code>
             curl --request GET \ --url
             <br />
-            https://teal-hornet-main-79f7919.zuplo.app/v1/todos \ --header{" "}
+            ${process.env.ZUPLO_URL}/v1/todos \ --header{" "}
             <br />
             &apos;Authorization: Bearer YOUR_KEY_HERE&apos;
           </code>
