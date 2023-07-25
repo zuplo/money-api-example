@@ -28,7 +28,7 @@ export const getActiveStripeSubscription = async (
 
   if (
     !customerSubscription.data[0].plan ||
-    customerSubscription.status !== "active"
+    customerSubscription.data[0].status !== "active"
   ) {
     logger.warn("customer has no subscription plan");
     return null;
