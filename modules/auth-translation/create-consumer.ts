@@ -2,18 +2,23 @@ import { ZuploContext, ZuploRequest, environment } from "@zuplo/runtime";
 
 interface CreateConsumerRequestBody {
   description: string;
+  keyPrefix: string;
+  metadata: {
+    [key: string]: string;
+  };
 }
 
 export default async function (request: ZuploRequest, context: ZuploContext) {
   const data: CreateConsumerRequestBody = await request.json();
   const orgId = context.custom.orgId;
+  const keyName = `${data.keyPrefix}-${crypto.randomUUID()}`;
 
   const body = {
-    name: `consumer-${crypto.randomUUID()}`,
+    name: keyName,
     description: data.description,
     // typically you would store some useful metadata
     // for us in the gateway pipeline
-    metadata: {},
+    metadata: data.metadata,
     tags: {
       orgId,
     },
