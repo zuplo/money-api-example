@@ -16,6 +16,7 @@
   "dependencies": {
     "@radix-ui/react-popover": "^1.0.5",
     "@zondax/ts-results": "^3.3.4",
+    "@zuplo/react-api-key-manager": "^1.1.0",
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.2.1",
     "focus-trap-react": "^10.1.4",
