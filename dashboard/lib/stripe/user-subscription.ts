@@ -63,6 +63,7 @@ export async function getProductById(productId: string) {
 }
 
 export type StripeActiveSubscription = {
+  stripeCustomerId: string;
   usage?: {
     total_usage: number;
   };
@@ -103,6 +104,7 @@ export const getStripeSubscriptionByEmail = async (
   }
 
   return Ok({
+    stripeCustomerId: stripeCustomer.id,
     usage: subscriptionItemUsage,
   });
 };

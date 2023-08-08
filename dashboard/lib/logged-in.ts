@@ -2,6 +2,7 @@ import { Session } from "next-auth";
 
 export type LoggedInSession = Session & {
   user: { email: string; name: string };
+  accessToken: string;
 };
 
 export const isLoggedInSession = (

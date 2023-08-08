@@ -2,6 +2,71 @@
   "policies": [
     {
       "handler": {
+        "export": "SetHeadersInboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "headers": [
+            {
+              "name": "authorization",
+              "value": "Bearer $env(ZAPI_KEY)",
+              "overwrite": true
+            }
+          ]
+        }
+      },
+      "name": "add-zapi-key-auth",
+      "policyType": "set-headers-inbound"
+    },
+    {
+      "handler": {
+        "export": "Auth0JwtInboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "allowUnauthenticatedRequests": false,
+          "auth0Domain": "$env(AUTH0_DOMAIN)",
+          "audience": "$env(AUTH0_AUDIENCE)"
+        }
+      },
+      "name": "auth0-jwt-auth-inbound",
+      "policyType": "auth0-jwt-auth-inbound"
+    },
+    {
+      "handler": {
+        "export": "default",
+        "module": "$import(./modules/auth-translation/set-org-id)"
+      },
+      "name": "set-user-org",
+      "policyType": "custom-code-inbound"
+    },
+    {
+      "handler": {
+        "export": "CompositeInboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "policies": [
+            "auth0-jwt-auth-inbound",
+            "set-user-org",
+            "add-zapi-key-auth"
+          ]
+        }
+      },
+      "name": "auth-orgid-and-zapi-key-composite",
+      "policyType": "composite-inbound"
+    },
+    {
+      "handler": {
+        "export": "SetStatusOutboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "status": 500,
+          "statusText": "OK"
+        }
+      },
+      "name": "set-status-outbound",
+      "policyType": "set-status-outbound"
+    },
+    {
+      "handler": {
         "export": "ValidateJsonSchemaInbound",
         "module": "$import(@zuplo/runtime)",
         "options": {
@@ -48,6 +113,17 @@
       },
       "name": "metered-request",
       "policyType": "custom-code-inbound"
+    },
+    {
+      "handler": {
+        "export": "ApiKeyInboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "allowUnauthenticatedRequests": false
+        }
+      },
+      "name": "api-key-inbound-1",
+      "policyType": "api-key-inbound"
     }
   ]
 }
