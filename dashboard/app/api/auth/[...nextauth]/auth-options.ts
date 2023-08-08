@@ -10,7 +10,7 @@ export const authOptions: NextAuthOptions = {
       authorization: {
         params: {
           scope: "openid profile email",
-          audience: "https://dev-ci7vajyawp0svo51.us.auth0.com/api/v2/",
+          audience: process.env.AUTH0_AUDIENCE,
         },
       },
     }),
