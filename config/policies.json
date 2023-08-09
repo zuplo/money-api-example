@@ -52,7 +52,7 @@
     {
       "handler": {
         "export": "default",
-        "module": "$import(./modules/handlers/get-stripe-subscription)"
+        "module": "$import(./modules/handlers/stripe/has-active-subscription)"
       },
       "name": "stripe-active-subscription",
       "policyType": "custom-code-inbound"
