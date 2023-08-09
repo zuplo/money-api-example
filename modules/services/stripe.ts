@@ -1,11 +1,11 @@
 import { Logger } from "@zuplo/runtime";
 import { environment } from "@zuplo/runtime";
-import { ErrorResponse } from "modules/types";
+import { ErrorResponse } from "../types";
 
 const STRIPE_API_KEY = environment.STRIPE_API_KEY;
 
 export const stripeRequest = async (path: string, options?: RequestInit) => {
-  return fetch("https://api.stripe.com/v1" + path, {
+  return fetch("https://api.stripe.com" + path, {
     ...options,
     headers: {
       ...options?.headers,
@@ -25,7 +25,8 @@ enum GetStripeDetailsErrorResponse {
 }
 
 export const getStripeCustomer = async (
-  email: string
+  email: string,
+  logger: Logger
 ): Promise<StripeCustomer | ErrorResponse> => {
   try {
     const customerSearchResult = await stripeRequest(
@@ -39,7 +40,7 @@ export const getStripeCustomer = async (
 
     return customerSearchResult.data[0] as StripeCustomer;
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     return new ErrorResponse(
       "An error happened while looking for your subscription",
       500
@@ -66,7 +67,7 @@ export const getStripeSubscriptionByEmail = async ({
   customerEmail: string;
   logger: Logger;
 }): Promise<ActiveStripeSubscriptions | ErrorResponse> => {
-  const stripeCustomer = await getStripeCustomer(customerEmail);
+  const stripeCustomer = await getStripeCustomer(customerEmail, logger);
 
   if (stripeCustomer instanceof ErrorResponse) {
     logger.warn("customer not found in stripe", {
@@ -91,8 +92,10 @@ export const getActiveStripeSubscription = async ({
   logger: Logger;
 }): Promise<ActiveStripeSubscriptions | ErrorResponse> => {
   const customerSubscription = await stripeRequest(
-    "/subscriptions?customer=" + stripeCustomerId + "&status=active&limit=1"
+    "/v1/subscriptions?customer=" + stripeCustomerId + "&status=active&limit=1"
   );
+
+  logger.info("customerSubscription", customerSubscription)
 
   if (customerSubscription.data.length === 0) {
     logger.warn("customer has no subscription", {
@@ -114,8 +117,24 @@ export const getActiveStripeSubscription = async ({
   return customerSubscription.data[0];
 };
 
+type SubscriptionItemUsage = {
+  total_usage: number;
+}
+
+export async function getSubscriptionItemUsage(subscriptionItemId: string): Promise<SubscriptionItemUsage | ErrorResponse> {
+  const subscriptionItemUsageRecords = await stripeRequest(
+    "/v1/subscription_items/" + subscriptionItemId + "/usage_record_summaries"
+  );
+
+  if (subscriptionItemUsageRecords.data.length === 0) {
+    return null;
+  }
+
+  return subscriptionItemUsageRecords.data[0];
+}
+
 export const getStripeProduct = async (productId: string) => {
-  return stripeRequest("/products/" + productId);
+  return stripeRequest("/v1/products/" + productId);
 };
 
 export const triggerMeteredSubscriptionItemUsage = async (
@@ -126,7 +145,7 @@ export const triggerMeteredSubscriptionItemUsage = async (
   params.append("quantity", quantity.toString());
 
   return stripeRequest(
-    `/subscription_items/${subscriptionItemId}/usage_records`,
+    `/v1/subscription_items/${subscriptionItemId}/usage_records`,
     {
       body: params,
       method: "POST",

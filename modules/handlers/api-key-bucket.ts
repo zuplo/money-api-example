@@ -1,6 +1,6 @@
 import { environment } from "@zuplo/runtime";
 
-export const getAPIKeyConsumer = async (email) => {
+export const getAPIKeyConsumer = async ({ email }: { email: string }) => {
   const response = await fetch(
     `${environment.BUCKET_URL}/consumers/?include-api-keys=true&key-format=visible&tag.email=${email}`,
     {
@@ -19,7 +19,7 @@ export const createAPIKeyConsumer = async ({
   description,
   stripeCustomerId,
 }) => {
-  const keyPrefix = email.replace(/@\./g, "-");
+  const keyPrefix = email.replace(/[@.]/g, "-");
   const keyName = `${keyPrefix}-${crypto.randomUUID()}`;
 
   const body = {

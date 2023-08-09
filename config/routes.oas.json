@@ -337,11 +337,9 @@
         "x-zuplo-route": {
           "corsPolicy": "anything-goes",
           "handler": {
-            "export": "urlRewriteHandler",
-            "module": "$import(@zuplo/runtime)",
-            "options": {
-              "rewritePattern": "${env.BUCKET_URL}/consumers/?include-api-keys=true&key-format=visible&tag.orgId=${context.custom.orgId}"
-            }
+            "export": "getConsumers",
+            "module": "$import(./modules/handlers/consumer)",
+            "options": {}
           },
           "policies": {
             "inbound": [
@@ -358,14 +356,17 @@
         "x-zuplo-route": {
           "corsPolicy": "anything-goes",
           "handler": {
-            "export": "default",
-            "module": "$import(./modules/handlers/create-consumer)",
-            "options": {}
+            "export": "urlRewriteHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "rewritePattern": "${env.BUCKET_URL}/consumers/${params.consumerName}/roll-key?tag.email=${context.custom.email}"
+            }
           },
           "policies": {
             "inbound": [
               "auth0-jwt-auth-inbound",
-              "stripe-active-subscription"
+              "stripe-active-subscription",
+              "add-zapi-key-auth"
             ]
           }
         },
@@ -390,7 +391,7 @@
             "export": "urlRewriteHandler",
             "module": "$import(@zuplo/runtime)",
             "options": {
-              "rewritePattern": "${env.BUCKET_URL}/consumers/${params.consumerName}/roll-key?tag.orgId=${context.custom.orgId}"
+              "rewritePattern": "${env.BUCKET_URL}/consumers/${params.consumerName}/roll-key?tag.email=${context.custom.email}"
             }
           },
           "policies": {
@@ -415,7 +416,7 @@
             "export": "urlRewriteHandler",
             "module": "$import(@zuplo/runtime)",
             "options": {
-              "rewritePattern": "${env.BUCKET_URL}/consumers/${params.consumerName}/keys/${params.keyId}?tag.orgId=${context.custom.orgId}"
+              "rewritePattern": "${env.BUCKET_URL}/consumers/${params.consumerName}/keys/${params.keyId}?tag.email=${context.custom.email}"
             }
           },
           "policies": {
@@ -442,7 +443,7 @@
             "export": "urlRewriteHandler",
             "module": "$import(@zuplo/runtime)",
             "options": {
-              "rewritePattern": "${env.BUCKET_URL}/consumers/${params.consumerName}?tag.orgId=${context.custom.orgId}"
+              "rewritePattern": "${env.BUCKET_URL}/consumers/${params.consumerName}?tag.orgId=${context.custom.email}"
             }
           },
           "policies": {
@@ -465,7 +466,7 @@
             "export": "urlRewriteHandler",
             "module": "$import(@zuplo/runtime)",
             "options": {
-              "rewritePattern": "${env.BUCKET_URL}/consumers/${params.consumerName}?tag.orgId=${context.custom.orgId}"
+              "rewritePattern": "${env.BUCKET_URL}/consumers/${params.consumerName}?tag.email=${context.custom.email}"
             }
           },
           "policies": {
@@ -724,18 +725,18 @@
         }
       }
     },
-    "/v1/stripe-subscription": {
+    "/v1/subscription": {
       "x-zuplo-path": {
         "pathMode": "open-api"
       },
       "get": {
-        "summary": "Get Stripe Subscription",
+        "summary": "Get Subscription",
         "description": "Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do `eiusmod tempor` incididunt ut labore et dolore magna aliqua.",
         "x-zuplo-route": {
           "corsPolicy": "none",
           "handler": {
             "export": "default",
-            "module": "$import(./modules/handlers/get-stripe-subscription)",
+            "module": "$import(./modules/handlers/stripe/get-subscription)",
             "options": {}
           },
           "policies": {
@@ -745,6 +746,29 @@
           }
         },
         "operationId": "db8b3641-e6c0-4f3e-9220-69a0b1e8f6bc"
+      }
+    },
+    "/v1/subscription/usage": {
+      "x-zuplo-path": {
+        "pathMode": "open-api"
+      },
+      "get": {
+        "summary": "Get ",
+        "description": "Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do `eiusmod tempor` incididunt ut labore et dolore magna aliqua.",
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "default",
+            "module": "$import(./modules/handlers/stripe/get-usage)",
+            "options": {}
+          },
+          "policies": {
+            "inbound": [
+              "auth0-jwt-auth-inbound"
+            ]
+          }
+        },
+        "operationId": "5345aa88-d304-400f-a41b-8ef682fced5c"
       }
     }
   }
