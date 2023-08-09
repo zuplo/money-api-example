@@ -10,16 +10,10 @@ import { useCallback, useMemo, useState } from "react";
 interface Props {
   apiUrl: string;
   accessToken: string;
-  stripeCustomerId: string;
   email: string;
 }
 
-export function KeyManager({
-  apiUrl,
-  accessToken,
-  stripeCustomerId,
-  email,
-}: Props) {
+export function KeyManager({ apiUrl, accessToken, email }: Props) {
   const [isCreating, setIsCreating] = useState(false);
   const [showIsLoading, setShowIsLoading] = useState(false);
 
@@ -39,11 +33,7 @@ export function KeyManager({
             authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify({
-            keyPrefix: email.replace(/[@.]/g, "-"),
             description,
-            metadata: {
-              stripeCustomerId: stripeCustomerId,
-            },
           }),
         });
 

@@ -1,8 +1,8 @@
+import { getSubscription, getUsage } from "@/lib/get-subscription";
 import { authOptions } from "../api/auth/[...nextauth]/auth-options";
 import { KeyManager } from "./KeyManager";
-import { CurrentSubscription } from "@/components/current-subscription";
+import { CurrentSubscriptionUsage } from "@/components/current-subscription";
 import { isLoggedInSession } from "@/lib/logged-in";
-import { getStripeSubscriptionByEmail } from "@/lib/stripe/user-subscription";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -15,16 +15,19 @@ export default async function DashboardPage() {
     return redirect("/");
   }
 
-  const customerSubscription = await getStripeSubscriptionByEmail(
-    session.user.email
-  );
+  const subscription = await getSubscription(session);
 
-  if (!customerSubscription.ok) {
-    redirect("/");
+  if (subscription.error) {
+    throw new Error(subscription.error)
+  }
+
+  const usage = await getUsage(session)
+
+  if (usage.error) {
+    throw new Error(usage.error)
   }
 
   return (
-    // center the content
     <div className="flex flex-col items-center justify-center">
       <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
         <div className="items-center">
@@ -35,7 +38,6 @@ export default async function DashboardPage() {
             <KeyManager
               apiUrl={zuploUrl}
               accessToken={session.accessToken}
-              stripeCustomerId={customerSubscription.val.stripeCustomerId}
               email={session.user.email}
             />
           </div>
@@ -48,7 +50,7 @@ export default async function DashboardPage() {
           </code>
         </div>
       </section>
-      <CurrentSubscription customerSubscription={customerSubscription.val} />
+      <CurrentSubscriptionUsage usage={usage} />
     </div>
   );
 }
