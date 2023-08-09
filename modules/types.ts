@@ -43,7 +43,7 @@ export class JsonResponse extends Response {
 }
 
 export class ErrorResponse extends JsonResponse {
-  constructor(message: string, status = 500) {
+  constructor(message: string, status = 400) {
     super({ error: message }, { status });
   }
 }

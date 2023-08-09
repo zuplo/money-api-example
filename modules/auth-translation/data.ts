@@ -4,6 +4,7 @@ import {
   MemoryZoneReadThroughCache,
   ZuploContext,
 } from "@zuplo/runtime";
+import { ErrorResponse } from "modules/types";
 
 /**
  * This is serves as a mock of a database, api,
@@ -58,32 +59,43 @@ export async function getUserOrg(
 export async function getUserInfo(
   request: ZuploRequest,
   context: ZuploContext
-): Promise<UserInfo> {
+): Promise<UserInfo | ErrorResponse> {
   // IDPs rate limit their user-info endpoints, so we cache the result based on the user sub
   const cache = new MemoryZoneReadThroughCache<UserInfo>("user-info", context);
+  const userSub = request?.user?.sub;
 
-  const cachedData = await cache.get(request.user.sub);
+  if (!userSub) {
+    return new ErrorResponse("User not found");
+  }
+  const cachedData = await cache.get(userSub);
 
   if (cachedData) {
     return cachedData;
+  }
+
+  const authHeader = request.headers.get("authorization");
+
+  if (!authHeader) {
+    return new ErrorResponse("Authorization header not found");
   }
 
   // User Info: https://auth0.com/docs/api/authentication#get-user-info
   const response = await fetch(`https://${environment.AUTH0_DOMAIN}/userinfo`, {
     headers: {
       "content-type": "application/json",
-      authorization: request.headers.get("authorization"),
+      authorization: authHeader,
     },
   });
+
   if (response.status !== 200) {
-    throw new Error(
+    return new ErrorResponse(
       `Could not get user info from identity provider (status: ${response.status} - ${response.statusText})`
     );
   }
 
   // store in cache for next time
   const data = await response.json();
-  cache.put(request.user.sub, data, 3600);
+  cache.put(userSub, data, 3600);
 
   return data;
 }
