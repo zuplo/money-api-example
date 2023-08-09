@@ -1,7 +1,7 @@
 import { ZuploContext, ZuploRequest } from "@zuplo/runtime";
 import { createAPIKeyConsumer } from "./api-key-bucket";
-import { getUserInfo } from "modules/utils/user-info";
-import { ErrorResponse } from "modules/types";
+import { getUserInfo } from "../utils/user-info";
+import { ErrorResponse } from "../types";
 
 interface CreateConsumerRequestBody {
   description: string;

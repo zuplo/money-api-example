@@ -359,14 +359,13 @@
           "corsPolicy": "anything-goes",
           "handler": {
             "export": "default",
-            "module": "$import(./modules/auth-translation/create-consumer)",
+            "module": "$import(./modules/handlers/create-consumer)",
             "options": {}
           },
           "policies": {
             "inbound": [
               "auth0-jwt-auth-inbound",
-              "stripe-active-subscription",
-              "set-email"
+              "stripe-active-subscription"
             ]
           }
         },
@@ -723,6 +722,29 @@
             }
           }
         }
+      }
+    },
+    "/v1/stripe-subscription": {
+      "x-zuplo-path": {
+        "pathMode": "open-api"
+      },
+      "get": {
+        "summary": "Get Stripe Subscription",
+        "description": "Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do `eiusmod tempor` incididunt ut labore et dolore magna aliqua.",
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "default",
+            "module": "$import(./modules/handlers/get-stripe-subscription)",
+            "options": {}
+          },
+          "policies": {
+            "inbound": [
+              "auth0-jwt-auth-inbound"
+            ]
+          }
+        },
+        "operationId": "db8b3641-e6c0-4f3e-9220-69a0b1e8f6bc"
       }
     }
   }
