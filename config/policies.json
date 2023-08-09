@@ -52,7 +52,7 @@
     {
       "handler": {
         "export": "default",
-        "module": "$import(./modules/handlers/stripe-details)"
+        "module": "$import(./modules/handlers/get-stripe-subscription)"
       },
       "name": "stripe-active-subscription",
       "policyType": "custom-code-inbound"
@@ -85,14 +85,6 @@
       },
       "name": "composite-add-zapi-key",
       "policyType": "composite-inbound"
-    },
-    {
-      "handler": {
-        "export": "default",
-        "module": "$import(./modules/handlers/set-email)"
-      },
-      "name": "set-email",
-      "policyType": "custom-code-inbound"
     }
   ]
 }
