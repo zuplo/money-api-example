@@ -14,7 +14,7 @@ export default async function stripeActiveSubscription(
   }
 
   return await getStripeSubscriptionByEmail({
-    customerEmail: userInfo.email,
-    logger: context.log,
+    request,
+    context,
   });
 }

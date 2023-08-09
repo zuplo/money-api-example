@@ -1,6 +1,12 @@
-import { Logger } from "@zuplo/runtime";
+import {
+  Logger,
+  MemoryZoneReadThroughCache,
+  ZuploContext,
+  ZuploRequest,
+} from "@zuplo/runtime";
 import { environment } from "@zuplo/runtime";
 import { ErrorResponse } from "../types";
+import { getUserInfo } from "modules/utils/user-info";
 
 const STRIPE_API_KEY = environment.STRIPE_API_KEY;
 
@@ -61,24 +67,46 @@ type ActiveStripeSubscriptions = {
 };
 
 export const getStripeSubscriptionByEmail = async ({
-  customerEmail,
-  logger,
+  request,
+  context,
 }: {
-  customerEmail: string;
-  logger: Logger;
+  request: ZuploRequest;
+  context: ZuploContext;
 }): Promise<ActiveStripeSubscriptions | ErrorResponse> => {
-  const stripeCustomer = await getStripeCustomer(customerEmail, logger);
+  const cache = new MemoryZoneReadThroughCache<ActiveStripeSubscriptions>(
+    "active-stripe-subscription",
+    context
+  );
+  const stripeCustomerId = request?.user?.data?.stripeCustomerId;
+
+  if (!stripeCustomerId) {
+    return new ErrorResponse("You don't have an active subscription.");
+  }
+
+  const cachedData = await cache.get(stripeCustomerId);
+
+  if (cachedData) {
+    return cachedData;
+  }
+
+  const userInfo = await getUserInfo(request, context);
+
+  if (userInfo instanceof ErrorResponse) {
+    return userInfo;
+  }
+
+  const stripeCustomer = await getStripeCustomer(userInfo.email, context.log);
 
   if (stripeCustomer instanceof ErrorResponse) {
-    logger.warn("customer not found in stripe", {
-      customerEmail,
+    context.log.warn("customer not found in stripe", {
+      email: userInfo.email,
     });
     return stripeCustomer;
   }
 
   const activeSubscription = await getActiveStripeSubscription({
     stripeCustomerId: stripeCustomer.id,
-    logger,
+    logger: context.log,
   });
 
   return activeSubscription;
@@ -94,8 +122,6 @@ export const getActiveStripeSubscription = async ({
   const customerSubscription = await stripeRequest(
     "/v1/subscriptions?customer=" + stripeCustomerId + "&status=active&limit=1"
   );
-
-  logger.info("customerSubscription", customerSubscription)
 
   if (customerSubscription.data.length === 0) {
     logger.warn("customer has no subscription", {
@@ -119,15 +145,17 @@ export const getActiveStripeSubscription = async ({
 
 type SubscriptionItemUsage = {
   total_usage: number;
-}
+};
 
-export async function getSubscriptionItemUsage(subscriptionItemId: string): Promise<SubscriptionItemUsage | ErrorResponse> {
+export async function getSubscriptionItemUsage(
+  subscriptionItemId: string
+): Promise<SubscriptionItemUsage | ErrorResponse> {
   const subscriptionItemUsageRecords = await stripeRequest(
     "/v1/subscription_items/" + subscriptionItemId + "/usage_record_summaries"
   );
 
   if (subscriptionItemUsageRecords.data.length === 0) {
-    return null;
+    return new ErrorResponse(GetStripeDetailsErrorResponse.NoUsage);
   }
 
   return subscriptionItemUsageRecords.data[0];

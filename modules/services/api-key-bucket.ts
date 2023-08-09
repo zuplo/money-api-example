@@ -1,19 +1,5 @@
 import { environment } from "@zuplo/runtime";
 
-export const getAPIKeyConsumer = async ({ email }: { email: string }) => {
-  const response = await fetch(
-    `${environment.BUCKET_URL}/consumers/?include-api-keys=true&key-format=visible&tag.email=${email}`,
-    {
-      headers: {
-        authorization: `Bearer ${environment.ZAPI_KEY}`,
-        "content-type": "application/json",
-      },
-    }
-  );
-
-  return response;
-};
-
 export const createAPIKeyConsumer = async ({
   email,
   description,
