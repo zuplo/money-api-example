@@ -4,58 +4,12 @@ import {
   MemoryZoneReadThroughCache,
   ZuploContext,
 } from "@zuplo/runtime";
-import { ErrorResponse } from "modules/types";
-
-/**
- * This is serves as a mock of a database, api,
- * or other mechanism to store users of the app
- */
-const DATA = {
-  orgs: [
-    {
-      id: "sales-east",
-      name: "Contoso",
-      members: ["abdallah@zuplo.com"],
-    },
-  ],
-};
-
-export interface Organization {
-  id: string;
-  name: string;
-}
+import { ErrorResponse } from "../types";
 
 interface UserInfo {
   sub: string;
   email: string;
 }
-
-/**
- * Gets the org that the user is a member of
- *
- * This mock function performs a 500ms sleep in order to simulate calling a
- * database or external API in order to retrieve the org
- */
-export async function getUserOrg(
-  user: UserInfo
-): Promise<Organization | undefined> {
-  // Call the mock data store to get the user's org
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Find the orgs in which the user is a member of
-      const org = DATA.orgs.find((o) => o.members.includes(user.email));
-      resolve(org);
-    }, 500);
-  });
-}
-
-/**
- * Gets the user profile info
- *
- * Normally, you would store the mapping between the userId (i.e. sub)
- * and email address in your database so that you don't perform this request
- * to the identity provider on every API request
- */
 export async function getUserInfo(
   request: ZuploRequest,
   context: ZuploContext

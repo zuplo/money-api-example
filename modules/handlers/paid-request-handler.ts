@@ -3,10 +3,10 @@ import {
   ZuploContext,
   MemoryZoneReadThroughCache,
 } from "@zuplo/runtime";
-import { getActiveStripeSubscription } from "modules/services/stripe";
-import { ErrorResponse, JsonResponse } from "modules/types";
+import { getActiveStripeSubscription } from "../services/stripe";
+import { ErrorResponse, JsonResponse } from "../types";
 
-import { processSuccessfulRequest } from "modules/utils/request-processor";
+import { processSuccessfulRequest } from "../utils/request-processor";
 
 type MeteredRequestDetails = {
   stringUsageSubscriptionItemId: string;

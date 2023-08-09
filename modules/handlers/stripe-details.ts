@@ -1,9 +1,9 @@
 import { ZuploContext, ZuploRequest } from "@zuplo/runtime";
-import { getUserInfo } from "modules/auth-translation/data";
-import { getStripeSubscriptionByEmail } from "modules/services/stripe";
-import { ErrorResponse } from "modules/types";
+import { getUserInfo } from "../utils/user-info";
+import { getStripeSubscriptionByEmail } from "../services/stripe";
+import { ErrorResponse } from "../types";
 
-export async function stripeSubscription(
+export async function stripeActiveSubscription(
   request: ZuploRequest,
   context: ZuploContext
 ) {

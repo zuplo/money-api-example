@@ -1,7 +1,5 @@
 import { ZuploContext, ZuploRequest } from "@zuplo/runtime";
-import { getUserInfo } from "./data";
-import { ErrorResponse } from "modules/types";
-import { createAPIKeyConsumer } from "modules/handlers/api-key-bucket";
+import { createAPIKeyConsumer } from "../handlers/api-key-bucket";
 
 interface CreateConsumerRequestBody {
   description: string;
@@ -9,14 +7,10 @@ interface CreateConsumerRequestBody {
 
 export default async function (request: ZuploRequest, context: ZuploContext) {
   const data: CreateConsumerRequestBody = await request.json();
-  const userInfo = await getUserInfo(request, context);
-
-  if (userInfo instanceof ErrorResponse) {
-    return userInfo;
-  }
+  const userEmail = await context.custom.email;
 
   return await createAPIKeyConsumer({
-    email: userInfo.email,
+    email: userEmail,
     description: data.description,
     stripeCustomerId: request?.user?.data?.stripeCustomerId,
   });
