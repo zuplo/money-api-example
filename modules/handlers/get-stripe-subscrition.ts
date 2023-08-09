@@ -3,9 +3,9 @@ import { getUserInfo } from "../utils/user-info";
 import { getStripeSubscriptionByEmail } from "../services/stripe";
 import { ErrorResponse } from "../types";
 
-export async function stripeActiveSubscription(
+export default async function stripeActiveSubscription(
   request: ZuploRequest,
-  context: ZuploContext,
+  context: ZuploContext
 ) {
   const userInfo = await getUserInfo(request, context);
 
