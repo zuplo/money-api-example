@@ -345,7 +345,7 @@
           },
           "policies": {
             "inbound": [
-              "auth-orgid-and-zapi-key-composite"
+              "composite-add-zapi-key"
             ],
             "outbound": []
           }
@@ -364,7 +364,9 @@
           },
           "policies": {
             "inbound": [
-              "auth-orgid-and-zapi-key-composite"
+              "auth0-jwt-auth-inbound",
+              "stripe-active-subscription",
+              "set-email"
             ]
           }
         },
@@ -394,7 +396,9 @@
           },
           "policies": {
             "inbound": [
-              "auth-orgid-and-zapi-key-composite"
+              "auth0-jwt-auth-inbound",
+              "stripe-active-subscription",
+              "add-zapi-key-auth"
             ],
             "outbound": []
           }
@@ -417,7 +421,9 @@
           },
           "policies": {
             "inbound": [
-              "auth-orgid-and-zapi-key-composite"
+              "auth0-jwt-auth-inbound",
+              "stripe-active-subscription",
+              "add-zapi-key-auth"
             ],
             "outbound": []
           }
@@ -442,7 +448,9 @@
           },
           "policies": {
             "inbound": [
-              "auth-orgid-and-zapi-key-composite"
+              "auth0-jwt-auth-inbound",
+              "stripe-active-subscription",
+              "add-zapi-key-auth"
             ],
             "outbound": []
           }
@@ -463,7 +471,9 @@
           },
           "policies": {
             "inbound": [
-              "auth-orgid-and-zapi-key-composite"
+              "auth0-jwt-auth-inbound",
+              "stripe-active-subscription",
+              "add-zapi-key-auth"
             ]
           }
         },
@@ -475,18 +485,18 @@
         "pathMode": "open-api"
       },
       "get": {
-        "summary": "New Route",
+        "summary": "who am i?",
         "description": "Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do `eiusmod tempor` incididunt ut labore et dolore magna aliqua.",
         "x-zuplo-route": {
           "corsPolicy": "anything-goes",
           "handler": {
             "export": "default",
-            "module": "$import(./modules/auth-translation/echo-user)",
+            "module": "$import(./modules/handlers/echo-user)",
             "options": {}
           },
           "policies": {
             "inbound": [
-              "api-key-inbound-1"
+              "api-key-inbound"
             ]
           }
         },
@@ -528,8 +538,7 @@
           },
           "policies": {
             "inbound": [
-              "api-key-inbound",
-              "metered-request"
+              "composite-paid-request"
             ],
             "outbound": []
           }
@@ -550,9 +559,7 @@
           },
           "policies": {
             "inbound": [
-              "api-key-inbound",
-              "validate-json-schema-inbound",
-              "metered-request"
+              "composite-paid-request"
             ]
           }
         },
@@ -595,144 +602,6 @@
         }
       }
     },
-    "/v1/$todosAndUsers": {
-      "x-zuplo-path": {
-        "pathMode": "open-api"
-      },
-      "get": {
-        "summary": "Get todos with user information",
-        "description": "Gets the list of todos, with a `user` property that contains information about the user that created the todo list item.",
-        "x-zuplo-route": {
-          "corsPolicy": "none",
-          "handler": {
-            "export": "default",
-            "module": "$import(./modules/todos-and-users)",
-            "options": {}
-          },
-          "policies": {
-            "inbound": [
-              "api-key-inbound",
-              "metered-request"
-            ]
-          }
-        },
-        "operationId": "398f226b-7401-4906-9aba-8dee92068f94",
-        "tags": [
-          "Extended Todo List Endpoints"
-        ],
-        "responses": {
-          "200": {
-            "description": "Todos with creating user data attached",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "required": [
-                      "user",
-                      "userId",
-                      "id",
-                      "title",
-                      "completed"
-                    ],
-                    "allOf": [
-                      {
-                        "$ref": "#/components/schemas/TodoObject"
-                      }
-                    ],
-                    "properties": {
-                      "user": {
-                        "$ref": "#/components/schemas/UserObject"
-                      }
-                    },
-                    "examples": [
-                      {
-                        "userId": 1,
-                        "id": 1,
-                        "title": "Take out the trash",
-                        "completed": false,
-                        "user": {
-                          "id": 1,
-                          "name": "Leanne Graham",
-                          "username": "Bret",
-                          "email": "Sincere@april.biz",
-                          "address": {
-                            "street": "Kulas Light",
-                            "suite": "Apt. 556",
-                            "city": "Gwenborough",
-                            "zipcode": "92998-3874",
-                            "geo": {
-                              "lat": "-37.3159",
-                              "lng": "81.1496"
-                            }
-                          },
-                          "phone": "1-770-736-8031 x56442",
-                          "website": "hildegard.org",
-                          "company": {
-                            "name": "Romaguera-Crona",
-                            "catchPhrase": "Multi-layered client-server neural-net",
-                            "bs": "harness real-time e-markets"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/$todosWithNoUserId": {
-      "x-zuplo-path": {
-        "pathMode": "open-api"
-      },
-      "get": {
-        "summary": "Get todos with user information removed",
-        "description": "Gets the list of todos with the user information stripped out. Use this API if the user's ID is sensitive information that can't be leaked to the product.",
-        "x-zuplo-route": {
-          "corsPolicy": "none",
-          "handler": {
-            "export": "urlRewriteHandler",
-            "module": "$import(@zuplo/runtime)",
-            "options": {
-              "rewritePattern": "https://jsonplaceholder.typicode.com/todos",
-              "forwardSearch": true
-            }
-          },
-          "policies": {
-            "inbound": [
-              "api-key-inbound",
-              "metered-request"
-            ],
-            "outbound": [
-              "custom-code-outbound"
-            ]
-          }
-        },
-        "operationId": "d98a939d-d1a2-4352-8c45-3566bfd67860",
-        "tags": [
-          "Extended Todo List Endpoints"
-        ],
-        "responses": {
-          "200": {
-            "description": "Anonymized todo list",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AnonymousTodoObject"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/todos/:todoId": {
       "x-zuplo-path": {
         "pathMode": "open-api"
@@ -752,9 +621,7 @@
           },
           "policies": {
             "inbound": [
-              "api-key-inbound",
-              "validate-json-schema-inbound-1",
-              "metered-request"
+              "composite-paid-request"
             ]
           }
         },
@@ -822,8 +689,7 @@
           },
           "policies": {
             "inbound": [
-              "api-key-inbound",
-              "metered-request"
+              "composite-paid-request"
             ]
           }
         },
@@ -852,42 +718,6 @@
                   "examples": [
                     {}
                   ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/random-todo": {
-      "x-zuplo-path": {
-        "pathMode": "open-api"
-      },
-      "get": {
-        "summary": "New Route",
-        "description": "Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do `eiusmod tempor` incididunt ut labore et dolore magna aliqua.",
-        "operationId": "4255c008-7fb2-4688-bac3-4fe072a26b36",
-        "x-zuplo-route": {
-          "corsPolicy": "none",
-          "handler": {
-            "export": "default",
-            "module": "$import(./modules/random-todo)",
-            "options": {}
-          },
-          "policies": {
-            "inbound": [
-              "api-key-inbound",
-              "metered-request"
-            ]
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "A random todo object.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TodoObject"
                 }
               }
             }
