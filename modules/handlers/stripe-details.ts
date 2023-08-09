@@ -5,7 +5,7 @@ import { ErrorResponse } from "../types";
 
 export async function stripeActiveSubscription(
   request: ZuploRequest,
-  context: ZuploContext
+  context: ZuploContext,
 ) {
   const userInfo = await getUserInfo(request, context);
 
