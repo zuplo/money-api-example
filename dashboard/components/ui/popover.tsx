@@ -1,5 +1,3 @@
-"use client";
-
 import Leaflet from "./leaflet";
 import useWindowSize from "@/lib/hooks/use-window-size";
 import * as PopoverPrimitive from "@radix-ui/react-popover";

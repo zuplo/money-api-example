@@ -1,5 +1,3 @@
-"use client";
-
 import { useSignInModal } from "./sign-in-modal";
 
 export const SignInButton = () => {

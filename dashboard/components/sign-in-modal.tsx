@@ -1,7 +1,6 @@
-"use client";
-
 import { Icons } from "@/components/ui/icons";
 import Modal from "@/components/ui/modal";
+import { useAuth0 } from "@auth0/auth0-react";
 import { signIn } from "next-auth/react";
 import {
   Dispatch,
@@ -19,6 +18,7 @@ const SignInModal = ({
   setShowSignInModal: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [signInClicked, setSignInClicked] = useState(false);
+  const { loginWithRedirect } = useAuth0();
 
   return (
     <Modal showModal={showSignInModal} setShowModal={setShowSignInModal}>
@@ -40,7 +40,7 @@ const SignInModal = ({
             } flex h-10 w-full items-center justify-center space-x-3 rounded-md border text-sm shadow-sm transition-all duration-75 focus:outline-none`}
             onClick={() => {
               setSignInClicked(true);
-              signIn("auth0");
+              loginWithRedirect();
             }}
           >
             {signInClicked ? (

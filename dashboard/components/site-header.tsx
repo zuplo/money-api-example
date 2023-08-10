@@ -1,16 +1,26 @@
-import NavBar from "@/components/navbar";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { buttonVariants } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
 import { siteConfig } from "@/config/site";
 import { Session } from "next-auth";
 import Link from "next/link";
+import UserDropdown from "./user-dropdown";
+import { useAuth0 } from "@auth0/auth0-react";
 
-export function SiteHeader({ session }: { session: Session | null }) {
+export function SiteHeader() {
+  const { isAuthenticated } = useAuth0();
+
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
-        <NavBar session={session} />
+        <div className="flex gap-6 md:gap-10">
+          <Link href="/" className="hidden items-center space-x-2 md:flex">
+            <span className="hidden font-bold sm:inline-block">
+              {siteConfig.name}
+            </span>
+          </Link>
+          <div>{isAuthenticated ? <UserDropdown /> : <></>}</div>
+        </div>
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-1">
             <Link

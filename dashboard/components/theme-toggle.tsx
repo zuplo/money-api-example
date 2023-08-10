@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/ui/icons";
 import { useTheme } from "next-themes";

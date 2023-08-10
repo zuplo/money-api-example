@@ -1,6 +1,5 @@
 {
   "openapi": "3.1.0",
-  "x-optic-url": "https://app.useoptic.com/organizations/ba052cc2-02ee-4bfd-b65a-1f3b554323d6/apis/s12iuM4kKQ1mHdGBJwS9u",
   "info": {
     "title": "Todo List API",
     "description": "Example API, built using [Zuplo](https://zuplo.com/), for managing tasks within a todo list. You can find the source code for this example [here](https://github.com/zuplo/samples-todo-list-open-api).",
@@ -18,18 +17,6 @@
   ],
   "components": {
     "schemas": {
-      "create-consumer": {
-        "type": "object",
-        "required": [
-          "description"
-        ],
-        "properties": {
-          "description": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      },
       "TodoObject": {
         "type": "object",
         "required": [
@@ -331,168 +318,6 @@
     }
   },
   "paths": {
-    "/consumers/my": {
-      "get": {
-        "summary": "Get my consumers",
-        "x-zuplo-route": {
-          "corsPolicy": "anything-goes",
-          "handler": {
-            "export": "urlRewriteHandler",
-            "module": "$import(@zuplo/runtime)",
-            "options": {
-              "rewritePattern": "${env.BUCKET_URL}/consumers/?include-api-keys=true&key-format=visible&tag.orgId=${context.custom.orgId}"
-            }
-          },
-          "policies": {
-            "inbound": [
-              "auth-orgid-and-zapi-key-composite"
-            ],
-            "outbound": []
-          }
-        },
-        "operationId": "d86ecbdc-2aa7-4bd0-9e61-4245ecd1d5cd"
-      },
-      "post": {
-        "summary": "Create consumer",
-        "description": "Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do `eiusmod tempor` incididunt ut labore et dolore magna aliqua.",
-        "x-zuplo-route": {
-          "corsPolicy": "anything-goes",
-          "handler": {
-            "export": "default",
-            "module": "$import(./modules/auth-translation/create-consumer)",
-            "options": {}
-          },
-          "policies": {
-            "inbound": [
-              "auth-orgid-and-zapi-key-composite"
-            ]
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/create-consumer"
-              }
-            }
-          }
-        },
-        "operationId": "bd902f32-26d8-481d-b053-276d6a694781"
-      }
-    },
-    "/consumers/{consumerName}/roll": {
-      "post": {
-        "summary": "Roll consumer key",
-        "x-zuplo-route": {
-          "corsPolicy": "anything-goes",
-          "handler": {
-            "export": "urlRewriteHandler",
-            "module": "$import(@zuplo/runtime)",
-            "options": {
-              "rewritePattern": "${env.BUCKET_URL}/consumers/${params.consumerName}/roll-key?tag.orgId=${context.custom.orgId}"
-            }
-          },
-          "policies": {
-            "inbound": [
-              "auth-orgid-and-zapi-key-composite"
-            ],
-            "outbound": []
-          }
-        },
-        "operationId": "f73c7996-b6bc-48b8-815b-ead885d723ed",
-        "x-internal": false
-      }
-    },
-    "/consumers/{consumerName}/keys/{keyId}": {
-      "delete": {
-        "summary": "Delete key",
-        "x-zuplo-route": {
-          "corsPolicy": "anything-goes",
-          "handler": {
-            "export": "urlRewriteHandler",
-            "module": "$import(@zuplo/runtime)",
-            "options": {
-              "rewritePattern": "${env.BUCKET_URL}/consumers/${params.consumerName}/keys/${params.keyId}?tag.orgId=${context.custom.orgId}"
-            }
-          },
-          "policies": {
-            "inbound": [
-              "auth-orgid-and-zapi-key-composite"
-            ],
-            "outbound": []
-          }
-        },
-        "operationId": "fa92d9f2-3d03-48e9-b475-19206b52f64a"
-      }
-    },
-    "/consumers/{consumerName}": {
-      "x-zuplo-path": {
-        "pathMode": "open-api"
-      },
-      "patch": {
-        "summary": "Update consumer",
-        "x-zuplo-route": {
-          "corsPolicy": "anything-goes",
-          "handler": {
-            "export": "urlRewriteHandler",
-            "module": "$import(@zuplo/runtime)",
-            "options": {
-              "rewritePattern": "${env.BUCKET_URL}/consumers/${params.consumerName}?tag.orgId=${context.custom.orgId}"
-            }
-          },
-          "policies": {
-            "inbound": [
-              "auth-orgid-and-zapi-key-composite"
-            ],
-            "outbound": []
-          }
-        },
-        "operationId": "84960874-662e-4454-ae3f-5f53611ba072"
-      },
-      "delete": {
-        "summary": "Delete consumer",
-        "description": "Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do `eiusmod tempor` incididunt ut labore et dolore magna aliqua.",
-        "x-zuplo-route": {
-          "corsPolicy": "anything-goes",
-          "handler": {
-            "export": "urlRewriteHandler",
-            "module": "$import(@zuplo/runtime)",
-            "options": {
-              "rewritePattern": "${env.BUCKET_URL}/consumers/${params.consumerName}?tag.orgId=${context.custom.orgId}"
-            }
-          },
-          "policies": {
-            "inbound": [
-              "auth-orgid-and-zapi-key-composite"
-            ]
-          }
-        },
-        "operationId": "9dcf25f3-7e22-4338-8255-c55e7165e9c2"
-      }
-    },
-    "/who-am-i": {
-      "x-zuplo-path": {
-        "pathMode": "open-api"
-      },
-      "get": {
-        "summary": "New Route",
-        "description": "Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do `eiusmod tempor` incididunt ut labore et dolore magna aliqua.",
-        "x-zuplo-route": {
-          "corsPolicy": "anything-goes",
-          "handler": {
-            "export": "default",
-            "module": "$import(./modules/auth-translation/echo-user)",
-            "options": {}
-          },
-          "policies": {
-            "inbound": [
-              "api-key-inbound-1"
-            ]
-          }
-        },
-        "operationId": "ce8c9b1f-e146-4c67-b05a-8fd69cd0121b"
-      }
-    },
     "/v1/todos": {
       "x-zuplo-path": {
         "pathMode": "open-api"
@@ -528,8 +353,7 @@
           },
           "policies": {
             "inbound": [
-              "api-key-inbound",
-              "metered-request"
+              "composite-metered-request"
             ],
             "outbound": []
           }
@@ -550,9 +374,7 @@
           },
           "policies": {
             "inbound": [
-              "api-key-inbound",
-              "validate-json-schema-inbound",
-              "metered-request"
+              "composite-metered-request"
             ]
           }
         },
@@ -595,304 +417,30 @@
         }
       }
     },
-    "/v1/$todosAndUsers": {
-      "x-zuplo-path": {
-        "pathMode": "open-api"
-      },
-      "get": {
-        "summary": "Get todos with user information",
-        "description": "Gets the list of todos, with a `user` property that contains information about the user that created the todo list item.",
-        "x-zuplo-route": {
-          "corsPolicy": "none",
-          "handler": {
-            "export": "default",
-            "module": "$import(./modules/todos-and-users)",
-            "options": {}
-          },
-          "policies": {
-            "inbound": [
-              "api-key-inbound",
-              "metered-request"
-            ]
-          }
-        },
-        "operationId": "398f226b-7401-4906-9aba-8dee92068f94",
-        "tags": [
-          "Extended Todo List Endpoints"
-        ],
-        "responses": {
-          "200": {
-            "description": "Todos with creating user data attached",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "required": [
-                      "user",
-                      "userId",
-                      "id",
-                      "title",
-                      "completed"
-                    ],
-                    "allOf": [
-                      {
-                        "$ref": "#/components/schemas/TodoObject"
-                      }
-                    ],
-                    "properties": {
-                      "user": {
-                        "$ref": "#/components/schemas/UserObject"
-                      }
-                    },
-                    "examples": [
-                      {
-                        "userId": 1,
-                        "id": 1,
-                        "title": "Take out the trash",
-                        "completed": false,
-                        "user": {
-                          "id": 1,
-                          "name": "Leanne Graham",
-                          "username": "Bret",
-                          "email": "Sincere@april.biz",
-                          "address": {
-                            "street": "Kulas Light",
-                            "suite": "Apt. 556",
-                            "city": "Gwenborough",
-                            "zipcode": "92998-3874",
-                            "geo": {
-                              "lat": "-37.3159",
-                              "lng": "81.1496"
-                            }
-                          },
-                          "phone": "1-770-736-8031 x56442",
-                          "website": "hildegard.org",
-                          "company": {
-                            "name": "Romaguera-Crona",
-                            "catchPhrase": "Multi-layered client-server neural-net",
-                            "bs": "harness real-time e-markets"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/$todosWithNoUserId": {
-      "x-zuplo-path": {
-        "pathMode": "open-api"
-      },
-      "get": {
-        "summary": "Get todos with user information removed",
-        "description": "Gets the list of todos with the user information stripped out. Use this API if the user's ID is sensitive information that can't be leaked to the product.",
-        "x-zuplo-route": {
-          "corsPolicy": "none",
-          "handler": {
-            "export": "urlRewriteHandler",
-            "module": "$import(@zuplo/runtime)",
-            "options": {
-              "rewritePattern": "https://jsonplaceholder.typicode.com/todos",
-              "forwardSearch": true
-            }
-          },
-          "policies": {
-            "inbound": [
-              "api-key-inbound",
-              "metered-request"
-            ],
-            "outbound": [
-              "custom-code-outbound"
-            ]
-          }
-        },
-        "operationId": "d98a939d-d1a2-4352-8c45-3566bfd67860",
-        "tags": [
-          "Extended Todo List Endpoints"
-        ],
-        "responses": {
-          "200": {
-            "description": "Anonymized todo list",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AnonymousTodoObject"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/todos/:todoId": {
-      "x-zuplo-path": {
-        "pathMode": "open-api"
-      },
-      "patch": {
-        "summary": "Update Todo",
-        "description": "Updates a todo list item with a matching `todoId`. Will return an error if a matching todo item is not found.",
-        "x-zuplo-route": {
-          "corsPolicy": "none",
-          "handler": {
-            "export": "urlRewriteHandler",
-            "module": "$import(@zuplo/runtime)",
-            "options": {
-              "rewritePattern": "https://jsonplaceholder.typicode.com/todos/${params.todoId}",
-              "forwardSearch": true
-            }
-          },
-          "policies": {
-            "inbound": [
-              "api-key-inbound",
-              "validate-json-schema-inbound-1",
-              "metered-request"
-            ]
-          }
-        },
-        "operationId": "f3334d8b-37f9-489b-87c5-08a8beb5657c",
-        "tags": [
-          "Standard Todo List Endpoints"
-        ],
-        "parameters": [
-          {
-            "name": "todoId",
-            "in": "path",
-            "description": "ID of the todo list item to be modified.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The new todo object.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TodoObject"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Schema validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SchemaValidationError"
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "description": "Request body to update a todo list object.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateTodoObject"
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete Todo",
-        "description": "Deletes a todo list item. Will return an error if the todo list item does not exist.",
-        "x-zuplo-route": {
-          "corsPolicy": "none",
-          "handler": {
-            "export": "urlRewriteHandler",
-            "module": "$import(@zuplo/runtime)",
-            "options": {
-              "rewritePattern": "https://jsonplaceholder.typicode.com/todos/${params.todoId}",
-              "forwardSearch": true
-            }
-          },
-          "policies": {
-            "inbound": [
-              "api-key-inbound",
-              "metered-request"
-            ]
-          }
-        },
-        "operationId": "1647d06c-2a96-41ab-a2f7-ebb55d5bcd76",
-        "tags": [
-          "Standard Todo List Endpoints"
-        ],
-        "parameters": [
-          {
-            "name": "todoId",
-            "in": "path",
-            "description": "ID of the todo list item to be deleted.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Empty response.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "examples": [
-                    {}
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/random-todo": {
       "x-zuplo-path": {
         "pathMode": "open-api"
       },
       "get": {
         "summary": "New Route",
         "description": "Lorem ipsum dolor sit amet, **consectetur adipiscing** elit, sed do `eiusmod tempor` incididunt ut labore et dolore magna aliqua.",
-        "operationId": "4255c008-7fb2-4688-bac3-4fe072a26b36",
         "x-zuplo-route": {
           "corsPolicy": "none",
           "handler": {
-            "export": "default",
-            "module": "$import(./modules/random-todo)",
-            "options": {}
+            "export": "urlRewriteHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "rewritePattern": "https://jsonplaceholder.typicode.com/todos/${params.todoId}",
+              "forwardSearch": true
+            }
           },
           "policies": {
             "inbound": [
-              "api-key-inbound",
-              "metered-request"
+              "composite-metered-request"
             ]
           }
         },
-        "responses": {
-          "200": {
-            "description": "A random todo object.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TodoObject"
-                }
-              }
-            }
-          }
-        }
+        "operationId": "4e028200-8197-4d69-ba0d-d41c831309a1"
       }
     }
   }

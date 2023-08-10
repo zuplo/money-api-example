@@ -7,7 +7,7 @@ It uses the following technologies:
 - [Zuplo](https://zuplo.com) - API Gateway
 - [Stripe](https://stripe.com) - Payment Processor
 - [Auth0](https://auth0.com) - Authentication Provider
-- [Vercel](https://vercel.com) - Web App Hosting
+- [NextJS](https://nextjs.org) - Web App Framework
 
 ## How it works
 
@@ -29,48 +29,7 @@ Your customers will be able to sign up to use your API using the web-app and mak
 
 [Fork](https://github.com/zuplo/money-api-example/fork) the repository as you will need to connect Zuplo to your own repository.
 
-### Step 1 - Deploy the web-app to Vercel
-
-The web-app is an example used to create a portal where users can sign up and subscribe to your API.
-
-> The deployment will not work until all the steps in this guide are completed but you will get the deployment URL which is needed in the next steps
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fzuplo%2Fmoney-api-example%2Ftree%2Fmain%2Fdashboard&project-name=money-api&demo-title=Money%20API&demo-description=Monetize%20your%20APIs%20in%2010%20minutes.&demo-url=https%3A%2F%2Fmoney-api.zuplo.com)
-
-### Step 2 - Setup web-app login with Auth0
-
-Auth0 is used to enable authentication _for the web-app only_ using social providers like Google, or email/password. This is to secure users that are logging into the website and **not** to the API. For the API, your users will be able to issue an API Key using the Developer Portal created with Zuplo.
-
-Steps:
-
-1. **Create and account and log-in in Autho [https://auth0.com](https://auth0.com)**
-
-2. **Create an Application**
-
-![Create Auth0 App](./assets/auth0-create-account.png)
-
-3. **In the _Settings_ tab, update the _Allowed Callback URLs_ field. You'll add the domains that your app authentication will work with, using comma separated values**:
-
-![Set up Allowed Callback URL](./assets/auth0-allowed-callback-url.png)
-
-```
-http://localhost:3000/api/auth/callback/auth0, https://$MY_APP_DOMAIN/api/auth/callback/auth0
-```
-
-4. **Copy the environment values you'll use in your APP**
-
-![Copy Credentials values from Settings](./assets/auth0-credential-values.png)
-
-Your env file will look like this:
-
-```
-# .env file
-AUTH0_ISSUER=https://dev-ci7vajyawp0svo51.us.auth0.com
-AUTH0_CLIENT_ID=RXnCGWrH2Pl5REDACTED
-AUTH0_CLIENT_SECRET=REDACTED
-```
-
-### Step 3 - Create a Stripe Subscription Product
+### Step 1 - Create a Stripe Subscription Product
 
 Stripe is used to manage the subscription of your users to your API. In this section, you will create a Stripe subscription product to allow your users to "pay as they go" and bill them for the exact number of requests that they made in a period of time.
 
@@ -92,10 +51,6 @@ Go back to _Product_ page.
 
 ![](./assets/stripe-add-pricing-table-2.png)
 
-Make sure to set the checkout redirect to the deployed web-app domain:
-
-![](./assets/stripe-add-pricing-table-3.png)
-
 4. **Add the Pricing table to your website**
 
 Copy the Pricing Table and paste in [`/dashboard/components/stripe-pricing-table.tsx`](./dashboard/components/stripe-pricing-table.tsx)
@@ -106,7 +61,6 @@ Copy the Pricing Table and paste in [`/dashboard/components/stripe-pricing-table
 <div
   dangerouslySetInnerHTML={{
     __html: `
--        YOUR SUBSCRIPTION TABLE HERE
 +        <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
 +        <stripe-pricing-table pricing-table-id="prctbl_1234ABC" publishable-key="pk_test_1234ABC">
 +        </stripe-pricing-table>
@@ -115,79 +69,108 @@ Copy the Pricing Table and paste in [`/dashboard/components/stripe-pricing-table
 />
 ```
 
-5. **Save your Stripe Secret Key**
+5. **Hold on to your Stripe Secret Key**
+
+We will use this in the next step.
 
 ![](./assets/stripe-get-secret-key.png)
 
-```
-# .env
-STRIPE_SECRET_KEY=sk...
-```
+### Step 2 - Deploy the API with Zuplo
 
-### Step 4 - Add an API Gateway to your API with Zuplo
+This API is configured to be deployed to Zuplo. You can find the git repo
+[here](https://github.com/zuplo/money-api-example), but all you have
+to do is click on the deploy button below and Zuplo will automatically create a
+copy of the project and deploy it for you 😎
 
-The project you just forked contains configuration for the Zuplo API Gateway.
+[![Foo](https://cdn.zuplo.com/www/zupit.svg)](http://portal.zuplo.com/zup-it?sourceRepoUrl=https://github.com/zuplo/sample-money-api.git)
 
-You can find the OpenAPI definition for a ToDo API under `config/routes.oas.json` which will be used by Zuplo to create the documentation of your API and also configure the routes to set-up API Key authentication and custom code to allow for monetizing your API directly from your API Gateway.
+You should see the below screen. Enter a custom name for your project or accept
+the default suggestion. Click **Zup It!** to complete the deployment.
 
-Under `/modules/monetization` you'll find a custom Zuplo Policy that we wrote which receives a requests and triggers user billing with Stripe.
+> **Auth0 Demo Tenant**:
+> To make it easier to get started with this demo we have provided you with a demo
+> Auth0 tenant. You can easily create and configure your own Auth0 tenant by
+> modifying the environment variables in the auth translation service and your
+> developer console projects.
 
-The backend for this app can live anywhere and be written in any language, but in this example for simplicity we've used https://jsonplaceholder.typicode.com
+Go to **_Settings > Environment Variables_** and create the following
+Environment Variables:
 
-Steps:
+1. `AUTH0_AUDIENCE`: This is the value of your configured API Audience in Auth0.
+   For simplicity you can use the value below from our sample Auth0 tenant to
+   test.
 
-1. **Create an account with Zuplo**: http://zuplo.com
+   ```
+   https://api.example.com/
+   ```
 
-2. **Create a Zuplo project from the template that you just forked**
+1. `AUTH0_DOMAIN`: This is the value of your Auth0 domain. For simplicity, you
+   can use the value below from our sample Auth0 tenant to test.
 
-![Create Project in Zuplo](./assets/zuplo-create-project.png)
+   ```
+   zuplo-samples.us.auth0.com
+   ```
 
-3. **Get Zuplo-related environment variables**
+1. `BUCKET_URL`: Get the value for this from **_Settings > Project
+   Information_** tab. The value is labelled ‘_API Key Bucket URL_’.
+1. `ZAPI_KEY`: (_Secret_) Get your ZAPI (Zuplo API) Key from the **_Settings >
+   Zuplo API Keys_** section.
+1. `STRIPE_API_KEY`: This key is the Stripe Secret Key that you got in the
+   previous step.
 
-These environment variables are needed to programatically create a Zuplo API Key using the [Zuplo Dev API](https://dev.zuplo.com) for your users as soon as they finish the checkout process in your web-app.
+All done! Your auth translation service is all ready to go 👏.
 
-![](./assets/zuplo-project-settings.png)
+> E-mail verification
+> To keep the demo simple, we do not check if the user's
+> [e-mail is verified](https://auth0.com/docs/manage-users/user-accounts/verify-emails).
+> You should do this in any real implementation.
 
-Make sure to copy the _Current Env URL_ and not the Production URL for now.
+### 3- Build the Web App
+
+This is a sample NextJS project that will be used to allow users to sign up and
+subscribe to your API.
+
+Clone the project by running the following command. You will be asked to name your project.
 
 ```sh
-# .env
-ZUPLO_URL=https://teal-hornet-main-f515e70.d2.zuplo.dev
-ZUPLO_PROJECT_ID=teal-hornet
-ZUPLO_ACCOUNT_ID=plum_everyday_squirrel
-ZUPLO_KEY_BUCKET=zprj-123ABC-working-copy
+npx create-next-app --example \
+  https://github.com/zuplo/sample-money-api-dashboard
 ```
 
-4. **Get Zuplo Dev API secret key**
+We'll now need to get the Auth Translation API url from the previous steps to
+start the Developer Console.
 
-You can find this in your Accounts Settings page in Zuplo.
+1.  Copy the API url
 
-![](./assets/zuplo-api-key.png)
+    In Zuplo, Go to the **_Settings > Project Information_** tab in Zuplo and
+    grab the Current Env URL value (it will look something like
+    `https://sample-auth-translation-api-main-a494b6a.d2.zuplo.dev`)
 
-```
-# .env
-ZUPLO_API_KEY=zpka_...
-```
+2.  Set the Environment Variable
 
-## Step 5 - Update the Environment Variables in Vercel
+    In your web app, open the `.env.local` file and set the
+    `NEXT_PUBLIC_API_URL` variable using the URL from the previous step:
 
-Now that you have all the environment variables of your account, you can update the environment variables in Vercel to make your web-app work.
+    ```txt title=.env.local {1}
+    NEXT_PUBLIC_API_URL=https://you-url-here.d2.zuplo.dev
+    NEXT_PUBLIC_AUTH0_DOMAIN=zuplo-samples.us.auth0.com
+    NEXT_PUBLIC_AUTH0_CLIENT_ID=OFNbP5hhtsCHkBsXHEtWO72kKQvJtgI3
+    NEXT_PUBLIC_AUTH0_AUDIENCE=https://api.example.com/
+    ```
 
-![](./assets/vercel-update-envs.png)
+    > Auth0 Demo Tenant
+    > If you are using your own Auth0 account, set the other variables
+    > accordingly, otherwise just leave our sample values.
 
-You will to trigger an empty deployment to make sure that the environment variables are updated.
+3.  Start the project
 
-```sh
-git commit --allow-empty -m "Trigger empty deployment to update envs"
-git push
-```
-
-## Step 6 - Try it out!
+    ```
+    npm run dev
+    ```
+## Step 4 - Try it out!
 
 You can now go through the flow of signing up to your API, creating an API Key, and making requests to your API.
 
 While signing up with Stripe, you can use [Test Credit Cards](https://stripe.com/docs/testing) to simulate the payment flow.
 
 Go make some money!
-
-![](./assets/money-api-ready.png)

@@ -32,71 +32,6 @@
     },
     {
       "handler": {
-        "export": "default",
-        "module": "$import(./modules/auth-translation/set-org-id)"
-      },
-      "name": "set-user-org",
-      "policyType": "custom-code-inbound"
-    },
-    {
-      "handler": {
-        "export": "CompositeInboundPolicy",
-        "module": "$import(@zuplo/runtime)",
-        "options": {
-          "policies": [
-            "auth0-jwt-auth-inbound",
-            "set-user-org",
-            "add-zapi-key-auth"
-          ]
-        }
-      },
-      "name": "auth-orgid-and-zapi-key-composite",
-      "policyType": "composite-inbound"
-    },
-    {
-      "handler": {
-        "export": "SetStatusOutboundPolicy",
-        "module": "$import(@zuplo/runtime)",
-        "options": {
-          "status": 500,
-          "statusText": "OK"
-        }
-      },
-      "name": "set-status-outbound",
-      "policyType": "set-status-outbound"
-    },
-    {
-      "handler": {
-        "export": "ValidateJsonSchemaInbound",
-        "module": "$import(@zuplo/runtime)",
-        "options": {
-          "validator": "$import(./schemas/insert-todo.json)"
-        }
-      },
-      "name": "validate-json-schema-inbound",
-      "policyType": "validate-json-schema-inbound"
-    },
-    {
-      "handler": {
-        "export": "ValidateJsonSchemaInbound",
-        "module": "$import(@zuplo/runtime)",
-        "options": {
-          "validator": "$import(./schemas/update-todo.json)"
-        }
-      },
-      "name": "validate-json-schema-inbound-1",
-      "policyType": "validate-json-schema-inbound"
-    },
-    {
-      "handler": {
-        "export": "default",
-        "module": "$import(./modules/remove-user-id)"
-      },
-      "name": "custom-code-outbound",
-      "policyType": "custom-code-outbound"
-    },
-    {
-      "handler": {
         "export": "ApiKeyInboundPolicy",
         "module": "$import(@zuplo/runtime)",
         "options": {
@@ -109,21 +44,47 @@
     {
       "handler": {
         "export": "default",
-        "module": "$import(./modules/monetization/metered)"
+        "module": "$import(./modules/handlers/middlewares/metered-request)"
       },
       "name": "metered-request",
       "policyType": "custom-code-inbound"
     },
     {
       "handler": {
-        "export": "ApiKeyInboundPolicy",
+        "export": "default",
+        "module": "$import(./modules/handlers/middlewares/check-subscription-and-add-email)"
+      },
+      "name": "check-subscription-and-add-email",
+      "policyType": "custom-code-inbound"
+    },
+    {
+      "handler": {
+        "export": "CompositeInboundPolicy",
         "module": "$import(@zuplo/runtime)",
         "options": {
-          "allowUnauthenticatedRequests": false
+          "policies": [
+            "api-key-inbound",
+            "metered-request"
+          ]
         }
       },
-      "name": "api-key-inbound-1",
-      "policyType": "api-key-inbound"
+      "name": "composite-metered-request",
+      "policyType": "composite-inbound"
+    },
+    {
+      "handler": {
+        "export": "CompositeInboundPolicy",
+        "module": "$import(@zuplo/runtime)",
+        "options": {
+          "policies": [
+            "auth0-jwt-auth-inbound",
+            "check-subscription-and-add-email",
+            "add-zapi-key-auth"
+          ]
+        }
+      },
+      "name": "composite-add-zapi-key",
+      "policyType": "composite-inbound"
     }
   ]
 }

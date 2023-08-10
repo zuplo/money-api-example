@@ -4,9 +4,6 @@ const nextConfig = {
     domains: ["lh3.googleusercontent.com", "vercel.com", "s.gravatar.com"],
   },
   reactStrictMode: true,
-  experimental: {
-    appDir: true,
-  },
 }
 
 export default nextConfig
