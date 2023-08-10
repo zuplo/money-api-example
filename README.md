@@ -35,9 +35,9 @@ Stripe is used to manage the subscription of your users to your API. In this sec
 
 Steps:
 
-1. **Log in to Stripe https://stripe.com (if you're creating a new account, you can skip the section of _Activate payments on your account_)**
+1. Log in to Stripe https://stripe.com (if you're creating a new account, you can skip the section of _Activate payments on your account_)
 
-2. **Create a subscription Product**
+2. Create a subscription Product
 
 Go to* **_Products_** and click **_Add a product_**.  
 
@@ -45,7 +45,7 @@ Now create a product with the following details:
 
 ![Stripe Add Product Step 2](./assets/stripe-add-product-step-2.png)
 
-3. **Create a Pricing Table to embed on the web-app**
+3. Create a Pricing Table to embed on the web-app
 
 Go back to _Product_ menu and click on the _Pricing tables_. 
 
@@ -53,7 +53,7 @@ Fill in the details as shown below:
 
 ![](./assets/stripe-add-pricing-table-2.png)
 
-4. **Add the Pricing table to your website**
+4. Add the Pricing table to your website
 
 Copy the Pricing Table code which will be used in the web app: 
 
@@ -73,7 +73,7 @@ Paste the code in the file [`/dashboard/components/stripe-pricing-table.tsx`](./
 />
 ```
 
-5. **Hold on to your Stripe Secret Key**
+5. Hold on to your Stripe Secret Key
 
 This Key will be used in the next step to configure the Zuplo API Gateway.
 
