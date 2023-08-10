@@ -39,23 +39,27 @@ Steps:
 
 2. **Create a subscription Product**
 
-![Stripe Add Product Step 1](./assets/stripe-add-product.png)
+Go to* **_Products_** and click **_Add a product_**.  
+
+Now create a product with the following details: 
 
 ![Stripe Add Product Step 2](./assets/stripe-add-product-step-2.png)
 
 3. **Create a Pricing Table to embed on the web-app**
 
-Go back to _Product_ page.
+Go back to _Product_ menu and click on the _Pricing tables_. 
 
-![](./assets/stripe-add-pricing-table.png)
+Fill in the details as shown below:
 
 ![](./assets/stripe-add-pricing-table-2.png)
 
 4. **Add the Pricing table to your website**
 
-Copy the Pricing Table and paste in [`/dashboard/components/stripe-pricing-table.tsx`](./dashboard/components/stripe-pricing-table.tsx)
+Copy the Pricing Table code which will be used in the web app: 
 
 ![](./assets/stripe-add-pricing-table-4.png)
+
+Paste the code in the file [`/dashboard/components/stripe-pricing-table.tsx`](./dashboard/components/stripe-pricing-table.tsx)
 
 ```diff
 <div
@@ -71,9 +75,9 @@ Copy the Pricing Table and paste in [`/dashboard/components/stripe-pricing-table
 
 5. **Hold on to your Stripe Secret Key**
 
-We will use this in the next step.
+This Key will be used in the next step to configure the Zuplo API Gateway.
 
-![](./assets/stripe-get-secret-key.png)
+Copy the Stripe Secret Key from the top right menu **_Developers > API Keys > Copy Secret Key_**. 
 
 ### Step 2 - Deploy the API with Zuplo
 
