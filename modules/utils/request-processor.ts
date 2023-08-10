@@ -1,6 +1,6 @@
 import { Logger, ZuploContext } from "@zuplo/runtime";
 import { triggerMeteredSubscriptionItemUsage } from "../services/stripe";
-import { BatchDispatch } from "modules/utils/batch-dispatcher";
+import { BatchDispatch } from "../utils/batch-dispatcher";
 
 type StripeSubscriptionItemId = string;
 type TotalRequests = number;

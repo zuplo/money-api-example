@@ -1,9 +1,9 @@
 import { ZuploContext, ZuploRequest } from "@zuplo/runtime";
-import { getUserInfo } from "../utils/user-info";
-import { getStripeSubscriptionByEmail } from "../services/stripe";
-import { ErrorResponse } from "../types";
+import { getUserInfo } from "../../utils/user-info";
+import { getStripeSubscriptionByEmail } from "../../services/stripe";
+import { ErrorResponse } from "../../types";
 
-export default async function stripeActiveSubscription(
+export default async function checkSubscriptionAndAddEmail(
   request: ZuploRequest,
   context: ZuploContext
 ) {
@@ -22,5 +22,8 @@ export default async function stripeActiveSubscription(
     return stripeSubscription;
   }
 
+  context.custom.email = userInfo.email;
+
   return request;
 }
+

@@ -56,6 +56,7 @@ export const getStripeCustomer = async (
 
 type ActiveStripeSubscriptions = {
   id: string;
+  customer: string;
   plan: {
     usage_type: "metered" | "licensed";
   };
@@ -73,26 +74,21 @@ export const getStripeSubscriptionByEmail = async ({
   request: ZuploRequest;
   context: ZuploContext;
 }): Promise<ActiveStripeSubscriptions | ErrorResponse> => {
-  const cache = new MemoryZoneReadThroughCache<ActiveStripeSubscriptions>(
-    "active-stripe-subscription",
-    context
-  );
-  const stripeCustomerId = request?.user?.data?.stripeCustomerId;
-
-  if (!stripeCustomerId) {
-    return new ErrorResponse("You don't have an active subscription.");
-  }
-
-  const cachedData = await cache.get(stripeCustomerId);
-
-  if (cachedData) {
-    return cachedData;
-  }
-
   const userInfo = await getUserInfo(request, context);
 
   if (userInfo instanceof ErrorResponse) {
     return userInfo;
+  }
+
+  const cache = new MemoryZoneReadThroughCache<ActiveStripeSubscriptions>(
+    "active-stripe-subscription",
+    context
+  );
+
+  const cachedData = await cache.get(userInfo.email);
+
+  if (cachedData) {
+    return cachedData;
   }
 
   const stripeCustomer = await getStripeCustomer(userInfo.email, context.log);
@@ -108,6 +104,12 @@ export const getStripeSubscriptionByEmail = async ({
     stripeCustomerId: stripeCustomer.id,
     logger: context.log,
   });
+
+  if (activeSubscription instanceof ErrorResponse) {
+    return activeSubscription;
+  }
+
+  cache.put(userInfo.email, activeSubscription, 3600);
 
   return activeSubscription;
 };
