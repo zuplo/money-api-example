@@ -1,9 +1,0 @@
-.zuplo/
-.cache/
-dist/
-node_modules/
-.env
-.husky/_
-
-# OS Stuff
-.DS_Store
